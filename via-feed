@@ -1,16 +1,26 @@
 #!/bin/bash
 
-cache="$HOME/.cache/via"
-system="$OSTYPE"
+cache_file="$HOME/.cache/via"
 
-if [[ "$1" == "-r" ]] || [[ ! -e "$cache" ]]; then
-	cat "$HOME/.config/via/shortcuts" > "$cache"
-	cat "$HOME/.config/via/websites" >> "$cache"
-	find "$HOME" -mindepth 1 \( -name ".*" -o -path "$HOME/code/*" \) -prune -o -print | sort >> "$cache"
+reload_cache_file() {
+	cat "$HOME/.config/via/shortcuts" > "$cache_file"
+	cat "$HOME/.config/via/websites" >> "$cache_file"
+	find "$HOME" -mindepth 1 \( -name ".*" -o -path "$HOME/code/*" \) -prune -o -print | sort >> "$cache_file"
+}
+
+output_feed() {
+  feed_list="$cache_file"
+  system="$OSTYPE"
+
+  if [ "$system" == "linux-gnu"* ], then
+    wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
+  fi
+
+  cat "$feed_list"
+}
+
+if [[ "$1" == "-r" ]] || [[ ! -f "$cache_file" ]]; then
+  reload_cache_file
 fi
 
-if [ "$system" == "linux-gnu"* ], then
-  wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
-fi
-
-cat "$cache"
+output_feed
