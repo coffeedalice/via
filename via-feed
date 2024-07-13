@@ -1,26 +1,39 @@
 #!/bin/bash
 
 cache_file="$HOME/.cache/via"
+via_dir="$HOME/.config/via"
+
+create_missing_files() {
+  [[ ! -d "${via_dir}" ]] && mkdir "${via_dir}"
+  [[ ! -f "${via_dir}/shortcuts" ]] && touch "${via_dir}/shortcuts" 
+  [[ ! -f "${via_dir}/websites" ]] && touch "${via_dir}/websites" 
+}
 
 reload_cache_file() {
-	cat "$HOME/.config/via/shortcuts" > "$cache_file"
-	cat "$HOME/.config/via/websites" >> "$cache_file"
+	cat "${via_dir}/shortcuts" > "${cache_file}"
+	cat "${via_dir}/websites" >> "${cache_file}"
 	find "$HOME" -mindepth 1 \( -name ".*" -o -path "$HOME/code/*" \) -prune -o -print | sort >> "$cache_file"
 }
 
 output_feed() {
-  feed_list="$cache_file"
+  feed_list="${cache_file}"
   system="$OSTYPE"
 
-  if [ "$system" == "linux-gnu"* ], then
+  if [[ "$system" == "linux-gnu"* ]], then
     wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
   fi
 
   cat "$feed_list"
 }
 
-if [[ "$1" == "-r" ]] || [[ ! -f "$cache_file" ]]; then
-  reload_cache_file
-fi
+main() {
+  create_missing_files
 
-output_feed
+  if [[ "$1" == "-r" ]] || [[ ! -f "${cache_file}" ]]; then
+    reload_cache_file
+  fi
+
+  output_feed
+}
+
+main
