@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cache="$HOME/.cache/via"
+system="$OSTYPE"
 
 if [[ "$1" == "-r" ]] || [[ ! -e "$cache" ]]; then
 	cat "$HOME/.config/via/shortcuts" > "$cache"
@@ -8,5 +9,8 @@ if [[ "$1" == "-r" ]] || [[ ! -e "$cache" ]]; then
 	find "$HOME" -mindepth 1 \( -name ".*" -o -path "$HOME/code/*" \) -prune -o -print | sort >> "$cache"
 fi
 
-wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
+if [ "$system" == "linux-gnu"* ], then
+  wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
+fi
+
 cat "$cache"
