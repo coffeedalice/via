@@ -20,7 +20,7 @@ output_feed () {
   local feed_list="${cache_file}"
   local system="$OSTYPE"
 
-  if [[ "$system" == "linux-gnu*" ]]; then
+  if [[ "$system" == "linux*" ]]; then
     wmctrl -xl | sed "s/^[^.]*\.//;s/ \+\S\+ \+/ /;s/^/w /;s/ \+/ /g"
   fi
 
