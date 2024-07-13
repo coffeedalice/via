@@ -1,5 +1,7 @@
 #!/bin/bash
 
+system="$OSTYPE"
+
 exec &> /dev/null
 
 while read -r arg; do
@@ -46,8 +48,12 @@ while read -r arg; do
 					sxiv "$arg" &
 					;;
 				*)
-					exit 1
-					;;
+          case "$system" in
+            "darwin*") open "$arg" ;;
+            "linux*") xdg-open "$arg" ;;
+            *) exit 1 ;;
+          esac
+          ;;
 			esac
 			;;
 	esac
