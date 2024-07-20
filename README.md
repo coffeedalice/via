@@ -1,5 +1,7 @@
 `via` is a more efficient way to interact with your computer.
 
+**Work In Progress, not stable as of latest versions!** Issues and advice welcome.
+
 # Concept
 
 Everything should be at most a few keystrokes away.
@@ -70,3 +72,19 @@ By default, `dmenu` is used. However, you can use `fzf`, `rofi`, or even a combi
 - opens folders in your file manager;
 - switches to open windows;
 - runs shell commands.
+
+# Coding Principles
+
+I forked this project (please give a look at the origin!), and started editing it because:
+
+1. I liked a lot the original, and wanted a version I could have working on both macOS and Linux.
+2. It gives me a project to work and practice with.
+
+So, here are the guidelines for this project:
+
+- Has to work both on Linux and macOS, maybe BSD someday.
+- The only "real" dependencies should be `dmenu`/`fzf`/the tool used to make a selection, based on the list output by `via-feed`.
+- Has to be written in POSIX Shell. (I'm still rewriting on this side, so there may still be Bash files.)
+- Purely functional. As mentioned, I'm here to practice, so I'd like to make it functional, with all the characteristics it implies – purity, variable scoping, etc..
+
+For now, I intend to be the sole person to commit code, however I gladly take advices and recommendations concerning POSIX and functional programming!
